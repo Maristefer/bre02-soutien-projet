@@ -6,3 +6,16 @@ require "vendor/autoload.php";
 // charge le contenu du .env dans $_ENV
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
+
+// Initialisez la variable $route à null
+$route = null;
+
+// Si $_GET['route'] existe, donnez sa valeur à $route
+if(isset($_GET['route']))
+{
+    $route=$_GET['route'];
+}
+
+// Instanciez le routeur et appelez la méthode handleRequest
+$router = new Router();
+$router->handleRequest($route);
