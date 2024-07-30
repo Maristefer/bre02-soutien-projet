@@ -14,6 +14,26 @@ class Router {
             // le code si il n'y a pas de route ( === la page d'accueil)
             $this->dc->homePage();
         }
+        else if($route === inscription)
+        {
+            
+        }
+        else if($route === check-inscription)
+        {
+            
+        }
+        else if($route === connexion)
+        {
+            
+        }
+        else if($route === check-connexion)
+        {
+            
+        }
+        else if($route === deconnexion)
+        {
+            
+        }
         else
         {
             // le code si c'est aucun des cas précédents ( === page 404)
