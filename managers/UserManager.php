@@ -19,6 +19,10 @@ class UserManager extends AbstractManager {
         ];
 
         $query->execute($parameters);
+        
+        $user->setId($this->db->lastInsertId());
+
+        return $user;
     }
     
     //méthode qui permet de trouver un utilisateur dans la base de données à partir de son email.

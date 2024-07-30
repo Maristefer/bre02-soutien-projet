@@ -26,11 +26,11 @@ abstract class AbstractController
 {
     if($route !== null)
     {
-        header(`Location: index.php?route=$route`);
+        header("Location: index.php?route=$route");
     }
     else
     {
-        header(`Location: index.php`);
+        header("Location: index.php");
     }
 }
 }

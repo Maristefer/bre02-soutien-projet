@@ -1,10 +1,10 @@
 <?php
 
-class Bungalows
+class User
 {
     private ? int $id =null;
 
-    public function __construct(private string $email, private string $password, private int $role)
+    public function __construct(private string $email, private string $password, private string $role)
     {
         
     }
