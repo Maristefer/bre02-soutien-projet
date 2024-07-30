@@ -22,15 +22,15 @@ class AuthController extends AbstractController {
         //vérifie que tous les champs du formulaire (email, password, confirm_password) sont bien présents. 
         //Si ce n'est pas le cas elle redirige vers la page d'inscription et affiche un message d'erreur.
         if(isset($_POST["email"])
-            && isset($_POST["password"]) && isset($_POST["confirm-password"]))
+            && isset($_POST["password"]) && isset($_POST["confirm_password"]))
         {
             $tokenManager = new CSRFTokenManager();
             
             //Vérifie si le csrf_token est présent et utilise le CSRFTokenManager pour vérifier que le token reçu est le bon, 
             //si ça n'est pas le cas elle redirige vers la page d'inscription et affiche un message d'erreur.
-            if(isset($_POST["csrf-token"]) && $tokenManager->validateCSRFToken($_POST["csrf-token"]))
+            if(isset($_POST["csrf_token"]) && $tokenManager->validateCSRFToken($_POST["csrf_token"]))
             {
-                if($_POST["password"] === $_POST["confirm-password"])
+                if($_POST["password"] === $_POST["confirm_password"])
                 {
                     $password_pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])[A-Za-z\d^\w\s]{8,}$/';
 
@@ -52,35 +52,35 @@ class AuthController extends AbstractController {
 
                             unset($_SESSION["error-message"]);
 
-                            $this->redirect("index.php?route=connexion");
+                            $this->redirect("connexion");
                         }
                         else
                         {
                             $_SESSION["error-message"] = "User already exists";
-                            $this->redirect("index.php?route=inscription");
+                            $this->redirect("inscription");
                         }
                     }
                     else {
                         $_SESSION["error-message"] = "Password is not strong enough";
-                        $this->redirect("index.php?route=inscription");
+                        $this->redirect("inscription");
                     }
                 }
                 else
                 {
                     $_SESSION["error-message"] = "The passwords do not match";
-                    $this->redirect("index.php?route=inscription");
+                    $this->redirect("inscription");
                 }
             }
             else
             {
                 $_SESSION["error-message"] = "Invalid CSRF token";
-                $this->redirect("index.php?route=inscription");
+                $this->redirect("inscription");
             }
         }
         else
         {
             $_SESSION["error-message"] = "Missing fields";
-            $this->redirect("index.php?route=inscription");
+            $this->redirect("inscription");
         }
         
         
@@ -91,6 +91,7 @@ class AuthController extends AbstractController {
         $this->render('front/login.html.twig', []);
     }
     
+   //méthode qui doit vérifier ce qui a été envoyé par le formulaire de connexion et connecter l'utilisateur dans la session si les informations sont correctes.
      /*$user = $this->um->findUserByEmail("test@test.fr");
         dump($user);*/
     public function checkLogin() : void 
@@ -100,7 +101,7 @@ class AuthController extends AbstractController {
         {
             $tokenManager = new CSRFTokenManager();
 
-            if(isset($_POST["csrf-token"]) && $tokenManager->validateCSRFToken($_POST["csrf-token"]))
+            if(isset($_POST["csrf_token"]) && $tokenManager->validateCSRFToken($_POST["csrf_token"]))
             {
                 $um = new UserManager();
                 $user = $um->findUserByEmail($_POST["email"]);
@@ -119,25 +120,25 @@ class AuthController extends AbstractController {
                     else
                     {
                         $_SESSION["error-message"] = "Invalid login information";
-                        $this->redirect("index.php?route=connexion");
+                        $this->redirect("connexion");
                     }
                 }
                 else
                 {
                     $_SESSION["error-message"] = "Invalid login information";
-                    $this->redirect("index.php?route=connexion");
+                    $this->redirect("connexion");
                 }
             }
             else
             {
                 $_SESSION["error-message"] = "Invalid CSRF token";
-                $this->redirect("index.php?route=connexion");
+                $this->redirect("connexion");
             }
         }
         else
         {
             $_SESSION["error-message"] = "Missing fields";
-            $this->redirect("index.php?route=connexion");
+            $this->redirect("connexion");
         }
     }
     
