@@ -2,8 +2,11 @@
 
 {% block main %}
     <main class="container py-5">
+        <div>
+            <p>{{session.error_message}}</p>
+        </div>
         <form action="index.php?route=check-inscription" method="post">
-            <input type="hidden" id="csrf_token" name="csrf_token" value="" />
+            <input type="hidden" id="csrf_token" name="csrf_token" value="{{session.csrf_token}}" />
             <fieldset>
                 <label for="email" class="form-label">
                     Email

@@ -36,7 +36,7 @@ class UserManager extends AbstractManager {
         $query->execute($parameters);
         $user = $query->fetch(PDO::FETCH_ASSOC);
 
-        if($user !== null)
+        if($user)
         {
             $item = new User($user["email"], $user["password"], $user["role"]);
             $item->setId($user["id"]);

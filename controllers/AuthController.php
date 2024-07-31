@@ -21,8 +21,7 @@ class AuthController extends AbstractController {
     {
         //vérifie que tous les champs du formulaire (email, password, confirm_password) sont bien présents. 
         //Si ce n'est pas le cas elle redirige vers la page d'inscription et affiche un message d'erreur.
-        if(isset($_POST["email"])
-            && isset($_POST["password"]) && isset($_POST["confirm_password"]))
+        if(isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm_password"]))
         {
             $tokenManager = new CSRFTokenManager();
             
@@ -32,7 +31,8 @@ class AuthController extends AbstractController {
             {
                 if($_POST["password"] === $_POST["confirm_password"])
                 {
-                    $password_pattern = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])[A-Za-z\d^\w\s]{8,}$/';
+                    // Mot de passe doit respecter les règles de sécurité
+                    $password_pattern = "/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/";
 
                     if (preg_match($password_pattern, $_POST["password"]))
                     {
@@ -41,45 +41,45 @@ class AuthController extends AbstractController {
 
                         if($user === null)
                         {
+                            // Créer un nouvel utilisateur si l'email n'existe pas encore
                             $email = htmlspecialchars($_POST["email"]);
                             $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
-                            $role = htmlspecialchars($_POST["role"]);
-                            $user = new User($email, $password, $role);
+                            $user = new User($email, $password, 'USER');
 
-                            $um->createUser($user);
+                            $um->createUser($user);// Ajoute l'utilisateur à la base de données
 
-                            $_SESSION["user"] = $user->getId();
+                            $_SESSION["user"] = $user->getId();// Sauvegarde l'utilisateur dans la session
 
-                            unset($_SESSION["error-message"]);
+                            unset($_SESSION["error_message"]);
 
                             $this->redirect("connexion");
                         }
                         else
                         {
-                            $_SESSION["error-message"] = "User already exists";
+                            $_SESSION["error_message"] = "User already exists";
                             $this->redirect("inscription");
                         }
                     }
                     else {
-                        $_SESSION["error-message"] = "Password is not strong enough";
+                        $_SESSION["error_message"] = "Password is not strong enough";
                         $this->redirect("inscription");
                     }
                 }
                 else
                 {
-                    $_SESSION["error-message"] = "The passwords do not match";
+                    $_SESSION["error_message"] = "The passwords do not match";
                     $this->redirect("inscription");
                 }
             }
             else
             {
-                $_SESSION["error-message"] = "Invalid CSRF token";
+                $_SESSION["error_message"] = "Invalid CSRF token";
                 $this->redirect("inscription");
             }
         }
         else
         {
-            $_SESSION["error-message"] = "Missing fields";
+            $_SESSION["error_message"] = "Missing fields";
             $this->redirect("inscription");
         }
         
