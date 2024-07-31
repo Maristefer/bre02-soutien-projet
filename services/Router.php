@@ -4,11 +4,15 @@ class Router
 {
     private DefaultController $dc;
     private AuthController $ac;
+    private AdminController $adc;
+    private UserController $uc;
     
     public function __construct()
     {
         $this->dc = new DefaultController();
         $this->ac = new AuthController();
+        $this->adc = new AdminController();
+        $this->uc = new UserController();
     }
 
     public function handleRequest(? string $route) : void 
@@ -37,6 +41,46 @@ class Router
         else if($route === "deconnexion")
         {
             $this->ac->logout();
+        }
+        else if($route === "admin")
+        {
+            $this->adc->home();
+        }
+        else if($route === "admin-connexion")
+        {
+            $this->adc->login();
+        }
+        else if($route === "admin-check-connexion")
+        {
+            $this->adc->checkLogin();
+        }
+        else if($route === "admin-create-user")
+        {
+            $this->uc->create();
+        }
+        else if($route === "admin-check-create-user")
+        {
+            $this->uc->checkCreate();
+        }
+        else if($route === "admin-edit-user")
+        {
+            $this->uc->edit();
+        }
+        else if($route === "admin-check-edit-user")
+        {
+            $this->uc->checkEdit();
+        }
+        else if($route === "admin-delete-user")
+        {
+            $this->uc->delete();
+        }
+        else if($route === "admin-list-user")
+        {
+            $this->uc->list();
+        }
+        else if($route === "admin-show-user")
+        {
+            $this->uc->show();
         }
         else
         {
