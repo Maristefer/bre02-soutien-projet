@@ -22,15 +22,16 @@
                 </tr>
             </thead>
             <tbody>
+                {% for user in users %}
                 <tr>
                     <td>
-                        1
+                         {{user.id}}
                     </td>
                     <td>
-                        mari@test.fr
+                        {{user.email}}
                     </td>
                     <td>
-                        USER
+                         {{user.role}}
                     </td>
                     <td>
                         <a class="btn btn-primary" href="index.php?route=admin-show-user" title="Voir l'utilisateur"><span class="bi bi-eye-fill" aria-hidden="true"></span></a>
@@ -38,6 +39,7 @@
                         <a class="btn btn-danger" href="index.php?route=admin-delete-user" title="Supprimer l'utilisateur"><span class="bi bi-trash-fill" aria-hidden="true"></span></a>
                     </td>
                 </tr>
+                 {% endfor %}
                 <tr>
                     <td>
                         2

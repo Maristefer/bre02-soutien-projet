@@ -6,11 +6,13 @@ class AdminController extends AbstractController
         parent::__construct();
     }
 
-    public function home() : void {
+    public function home() : void 
+    {
         $this->render('admin/home.html.twig', []);
     }
 
-    public function login() : void {
+    public function login() : void 
+    {
         $this->render('admin/login.html.twig', []);
     }
 

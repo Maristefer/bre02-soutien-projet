@@ -2,8 +2,11 @@
 
 class UserController extends AbstractController
 {
+    private UserManager $um;
+    
     public function __construct(){
         parent::__construct();
+        $this->um = new UserManager();
     }
 
     public function create() : void {
@@ -26,8 +29,10 @@ class UserController extends AbstractController
 
     }
 
-    public function list() : void {
-        $this->render("admin/users/list.html.twig", []);
+    public function list() : void 
+    {
+        $users = $this->um->findAllUsers();
+        $this->render("admin/users/list.html.twig", ['users' => $users]);
     }
 
     public function show() : void {

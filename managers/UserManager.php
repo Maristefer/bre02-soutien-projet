@@ -49,4 +49,23 @@ class UserManager extends AbstractManager {
         }
     }
     
+    // Méthode qui permet de trouver tous les utilisateurs dans la base de données.
+    // Retourne un tableau d'instances de la classe User
+    public function findAllUsers() : array
+    {
+        $query = $this->db->prepare('SELECT * FROM users');
+        $query->execute();
+        $users = $query->fetchAll(PDO::FETCH_ASSOC);
+
+        $userList = [];
+        foreach ($users as $user) 
+        {
+            $item = new User($user["email"], $user["password"], $user["role"]);
+            $item->setId($user["id"]);
+            $userList[] = $item;
+        }
+
+        return $userList;
+    }
+    
 }

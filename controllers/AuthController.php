@@ -113,31 +113,31 @@ class AuthController extends AbstractController {
                         $_SESSION["user"] = $user->getId();
                         $_SESSION["role"] = $user->getRole();
 
-                        unset($_SESSION["error-message"]);
+                        unset($_SESSION["error_message"]);
 
                         $this->redirect("index.php");
                     }
                     else
                     {
-                        $_SESSION["error-message"] = "Invalid login information";
+                        $_SESSION["error_message"] = "Invalid login information";
                         $this->redirect("connexion");
                     }
                 }
                 else
                 {
-                    $_SESSION["error-message"] = "Invalid login information";
+                    $_SESSION["error_message"] = "Invalid login information";
                     $this->redirect("connexion");
                 }
             }
             else
             {
-                $_SESSION["error-message"] = "Invalid CSRF token";
+                $_SESSION["error_message"] = "Invalid CSRF token";
                 $this->redirect("connexion");
             }
         }
         else
         {
-            $_SESSION["error-message"] = "Missing fields";
+            $_SESSION["error_message"] = "Missing fields";
             $this->redirect("connexion");
         }
     }

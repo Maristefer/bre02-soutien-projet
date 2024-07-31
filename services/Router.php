@@ -44,8 +44,10 @@ class Router
         }
         else if($route === "admin")
         {
-            $this->adc->home();
-        }
+            
+                $this->checkAdminAccess();
+                $this->adc->home();
+        }    
         else if($route === "admin-connexion")
         {
             $this->adc->login();
@@ -56,36 +58,71 @@ class Router
         }
         else if($route === "admin-create-user")
         {
+            $this->checkAdminAccess();
             $this->uc->create();
         }
         else if($route === "admin-check-create-user")
         {
+            $this->checkAdminAccess();
             $this->uc->checkCreate();
         }
         else if($route === "admin-edit-user")
         {
+            $this->checkAdminAccess();
             $this->uc->edit();
         }
         else if($route === "admin-check-edit-user")
         {
+            $this->checkAdminAccess();
             $this->uc->checkEdit();
         }
         else if($route === "admin-delete-user")
         {
+            $this->checkAdminAccess();
             $this->uc->delete();
         }
         else if($route === "admin-list-user")
         {
+            $this->checkAdminAccess();
             $this->uc->list();
         }
         else if($route === "admin-show-user")
         {
+            $this->checkAdminAccess();
             $this->uc->show();
         }
         else
         {
             // le code si c'est aucun des cas précédents ( === page 404)
-             $this->dc->notFound();
+            $this->dc->notFound();
         }
     }
+    
+    private function checkAdminAccess(): void
+    {
+        if(isset($_SESSION['user']) 
+            && isset($_SESSION['role']) && $_SESSION['role'] === "ADMIN")
+            {
+                // c'est bon
+                $this->adc->home();
+            }
+            else
+            {
+                     // c'est pas bon : redirection avec un header('Location:')
+                     $this->redirect("admin-connexion");
+            }
+    }
+    
+    protected function redirect(? string $route) : void 
+    {
+        if($route !== null)
+        {
+            header("Location: index.php?route=$route");
+        }
+        else
+        {
+            header("Location: index.php");
+        }
+        exit();
+    }   
 }
