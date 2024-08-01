@@ -5,11 +5,12 @@
     <h1 class="mb-4">Ajouter un utilisateur</h1>
     <form action="index.php?route=admin-check-edit-user" method="post">
         <input type="hidden" id="csrf_token" name="csrf_token" value="{{ session.csrf_token }}" />
+        <input type="hidden" id="user_id" name="user_id" value="{{user.id}}"></input>
         <fieldset class="mb-2">
             <label for="email" class="form-label">
                 Email
             </label>
-            <input type="email" name="email" id="email" required class="form-control" value="mari@test.fr"/>
+            <input type="email" name="email" id="email" required class="form-control" value="{{user.email}}"/>
         </fieldset>
         <fieldset class="mb-2">
             <label for="password" class="form-label">
@@ -28,8 +29,8 @@
                 Rôle
             </label>
             <select class="form-select" id="role" name="role">
-                <option value="USER" selected>User</option>
-                <option value="ADMIN">Admin</option>
+                <option value="USER" {% if user.role == 'USER' %}selected{% endif %}>User</option>
+                <option value="ADMIN" {% if user.role == 'ADMIN' %}selected{% endif %}>Admin</option>
             </select>
         </fieldset>
         <fieldset>

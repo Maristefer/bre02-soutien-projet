@@ -69,7 +69,13 @@ class Router
         else if($route === "admin-edit-user")
         {
             $this->checkAdminAccess();
-            $this->uc->edit();
+            
+            if (isset($_GET['user_id'])) {
+                $userId = (int)$_GET['user_id'];
+                $this->uc->edit($userId);
+            } else {
+                $this->redirect("admin-list-user");
+            }
         }
         else if($route === "admin-check-edit-user")
         {

@@ -83,12 +83,88 @@ class UserController extends AbstractController
         
     }
 
-    public function edit() : void {
-        $this->render("admin/users/edit.html.twig", []);
+    public function edit(int $id) : void 
+    {
+        $user = $this->um->findUserById($id);
+        
+        if($user !== null)
+        {
+             $this->render("admin/users/edit.html.twig", ['user' => $user]);
+        }
+        else
+        {
+            $this->redirect("admin-list-user");
+        }
     }
 
-    public function checkEdit() : void {
+    public function checkEdit() : void 
+    {
+        if(isset($_POST["email"]) && isset($_POST["password"]) && isset($_POST["confirm_password"]) && isset($_POST["role"])
+        && isset($_POST["user_id"]))
+        {
+            $tokenManager = new CSRFTokenManager();
+            
+            //Vérifie si le csrf_token est présent et utilise le CSRFTokenManager pour vérifier que le token reçu est le bon, 
+            //si ça n'est pas le cas elle redirige vers la page d'inscription et affiche un message d'erreur.
+            if(isset($_POST["csrf_token"]) && $tokenManager->validateCSRFToken($_POST["csrf_token"]))
+            {
+                if($_POST["password"] === $_POST["confirm_password"])
+                {
+                    // Mot de passe doit respecter les règles de sécurité
+                    $password_pattern = "/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/";
 
+                    if (preg_match($password_pattern, $_POST["password"]))
+                    {
+                        $um = new UserManager();
+                        /*$user = $um->findUserByEmail($_POST["email"]);
+
+                        if($user === null)
+                        {*/
+                            $userId = (int)$_POST["user_id"];
+                            $email = htmlspecialchars($_POST["email"]);
+                            $password = password_hash($_POST["password"], PASSWORD_BCRYPT);
+                            $role = htmlspecialchars($_POST["role"]);
+                            
+                            $user = new User($email, $password, $role);
+                            $user->setId($userId);
+
+                            $um->updateUser($user);/// Met à jour l'utilisateur dans la base de données
+
+
+                            $_SESSION["user"] = $user->getId();// Sauvegarde l'utilisateur dans la session
+
+                            unset($_SESSION["error_message"]);
+
+                            $this->redirect("admin-list-user");
+                        /*}
+                        else
+                        {
+                            $_SESSION["error_message"] = "User already exists";
+                            $this->redirect("admin-edit-user&user_id=$userId");
+                        }*/
+                    }
+                    else {
+                        $_SESSION["error_message"] = "Password is not strong enough";
+                        $this->redirect("admin-edit-user&user_id=$userId");
+                    }
+                }
+                else
+                {
+                    $_SESSION["error_message"] = "The passwords do not match";
+                    $this->redirect("admin-edit-user&user_id=$userId");
+                }
+            }
+            else
+            {
+                $_SESSION["error_message"] = "Invalid CSRF token";
+                $this->redirect("admin-edit-user&user_id=$userId");
+            }
+        }
+        else
+        {
+            $_SESSION["error_message"] = "Missing fields";
+            $this->redirect("admin-edit-user&user_id=$userId");
+        }
     }
 
     public function delete() : void {
