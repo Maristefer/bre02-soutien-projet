@@ -101,7 +101,17 @@ class UserController extends AbstractController
         $this->render("admin/users/list.html.twig", ['users' => $users]);
     }
 
-    public function show() : void {
-        $this->render("admin/users/show.html.twig", []);
+    public function show(int $id) : void {
+        
+        $user = $this->um->findUserById($id);
+        
+        if($user !== null)
+        {
+             $this->render("admin/users/show.html.twig", ['user' => $user]);
+        }
+        else
+        {
+            $this->redirect("admin-list-user");
+        }
     }
 }

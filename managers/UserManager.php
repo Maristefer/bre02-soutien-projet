@@ -68,4 +68,29 @@ class UserManager extends AbstractManager {
         return $userList;
     }
     
+    //Méthode qui permet de trouver un utilisateur dans la base de données à partir de son id.
+    public function findUserById(int $id): ? User
+    {
+        $query = $this->db->prepare('SELECT * FROM users WHERE id = :id');
+        $parameters = [
+            "id" => $id,
+        ];
+        $query->execute($parameters);
+        $user = $query->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user) 
+        {
+        $userInstance = new User($user["email"], $user["password"], $user["role"]);
+        $userInstance->setId($user["id"]);
+        
+        return $userInstance;
+        
+        }
+        else 
+        {
+            return null;
+        }
+
+    }
+    
 }

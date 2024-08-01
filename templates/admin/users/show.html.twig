@@ -9,15 +9,16 @@
                     Email
                 </dt>
                 <dd>
-                    mari@test.fr
+                    {{ user.email }}
                 </dd>
                 <dt>
                     Role
                 </dt>
                 <dd>
-                    USER
+                    {{ user.role }}
                 </dd>
             </dl>
         </article>
+        <!--<a href="index.php?route=admin-list-user" class="btn btn-primary">Retour à la liste des utilisateurs</a>-->
     </main>
 {% endblock %}

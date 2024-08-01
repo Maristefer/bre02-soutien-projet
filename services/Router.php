@@ -89,7 +89,18 @@ class Router
         else if($route === "admin-show-user")
         {
             $this->checkAdminAccess();
-            $this->uc->show();
+            //vérifie si le paramètre $_GET['user_id'] existe.
+            if(isset($_GET['user_id']))
+            {
+                //Si le paramètre existe, il est transformé en entier en utilisant le casting (int).
+                $userId = (int)$_GET['user_id'];
+                //Méthode show du UserController est appelée avec l'ID de l'utilisateur transformé en entier.
+                $this->uc->show($userId);
+            }
+            else
+            {
+                $this->redirect("admin-list-user");
+            }
         }
         else
         {
@@ -104,7 +115,7 @@ class Router
             && isset($_SESSION['role']) && $_SESSION['role'] === "ADMIN")
             {
                 // c'est bon
-                $this->adc->home();
+                //$this->adc->home();
             }
             else
             {
