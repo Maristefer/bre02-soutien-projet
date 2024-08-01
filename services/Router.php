@@ -85,7 +85,18 @@ class Router
         else if($route === "admin-delete-user")
         {
             $this->checkAdminAccess();
-            $this->uc->delete();
+            //vérifie si le paramètre $_GET['user_id'] existe.
+            if(isset($_GET['user_id']))
+            {
+                //Si le paramètre existe, il est transformé en entier en utilisant le casting (int).
+                $userId = (int)$_GET['user_id'];
+                //Méthode show du UserController est appelée avec l'ID de l'utilisateur transformé en entier.
+                $this->uc->delete($userId);
+            }
+            else
+            {
+                $this->redirect("admin-list-user");
+            }
         }
         else if($route === "admin-list-user")
         {

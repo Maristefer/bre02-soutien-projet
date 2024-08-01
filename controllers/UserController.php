@@ -167,8 +167,10 @@ class UserController extends AbstractController
         }
     }
 
-    public function delete() : void {
-
+    public function delete(int $id) : void 
+    {
+        $this->um->deleteUser($id);
+        $this->redirect("admin-list-user");
     }
 
     public function list() : void 

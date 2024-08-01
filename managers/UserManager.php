@@ -108,4 +108,15 @@ class UserManager extends AbstractManager {
         return $user;
     }
     
+    // Méthode pour supprimer un utilisateur
+    public function deleteUser(int $id) : void
+    {
+        $query = $this->db->prepare('DELETE users FROM users WHERE id = :id');
+        $parameters = [
+            "id" => $id,
+        ];
+
+        $query->execute($parameters);
+    }
+    
 }
