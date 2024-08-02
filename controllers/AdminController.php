@@ -2,8 +2,11 @@
 
 class AdminController extends AbstractController
 {
+    private UserManager $um;
+    
     public function __construct(){
         parent::__construct();
+        $this->um = new UserManager();
     }
 
     public function home() : void 
