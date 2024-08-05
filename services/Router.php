@@ -22,6 +22,10 @@ class Router
             // le code si il n'y a pas de route ( === la page d'accueil)
             $this->dc->homePage();
         }
+         else if($route === "home")
+        {
+             $this->dc->homePage();
+        }
         else if($route === "inscription")
         {
             $this->ac->register();
@@ -44,9 +48,8 @@ class Router
         }
         else if($route === "admin")
         {
-            
-                $this->checkAdminAccess();
-                $this->adc->home();
+            $this->checkAdminAccess();
+            $this->adc->home();
         }    
         else if($route === "admin-connexion")
         {

@@ -4,8 +4,10 @@ class AdminController extends AbstractController
 {
     private UserManager $um;
     
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
+        
         $this->um = new UserManager();
     }
 
@@ -27,12 +29,12 @@ class AdminController extends AbstractController
 
             if(isset($_POST["csrf_token"]) && $tokenManager->validateCSRFToken($_POST["csrf_token"]))
             {
-                $um = new UserManager();
-                $user = $um->findUserByEmail($_POST["email"]);
+                //$um = new UserManager();
+                $user = $this->um->findUserByEmail($_POST["email"]);
 
-                if($user !== null)
+                if($user !== null && password_verify($_POST["password"], $user->getPassword()))
                 {
-                    if(password_verify($_POST["password"], $user->getPassword()) && $user->getRole() === "ADMIN")
+                    if($user->getRole() === "ADMIN")
                     {
                         $_SESSION["user"] = $user->getId();
                         $_SESSION["role"] = $user->getRole();
@@ -43,12 +45,14 @@ class AdminController extends AbstractController
                     }
                     else
                     {
-                        $_SESSION["error_message"] = "Invalid login information";
-                        $this->redirect("admin-connexion");
+                         // L'utilisateur n'est pas admin
+                        $_SESSION["error_message"] = "Access denied. Admins only.";
+                        $this->redirect("home");
                     }
                 }
                 else
                 {
+                    // Email ou mot de passe incorrect
                     $_SESSION["error_message"] = "Invalid login information";
                     $this->redirect("admin-connexion");
                 }
