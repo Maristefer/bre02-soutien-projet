@@ -30,10 +30,13 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="index.php?route=admin-deconnexion">Déconnexion</a>
-            </li>
-        </ul>
+                    <!--vérifie si la variable de session user est définie. Si c'est le cas, cela signifie que l'utilisateur est connecté.-->
+                    {% if session.user is defined %} 
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.php?route=admin-deconnexion">Déconnexion</a>
+                        </li>
+                    {% endif %}
+                </ul>
             </nav>
         </header>
 
