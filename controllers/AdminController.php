@@ -47,7 +47,7 @@ class AdminController extends AbstractController
                     {
                          // L'utilisateur n'est pas admin
                         $_SESSION["error_message"] = "Access denied. Admins only.";
-                        $this->redirect("home");
+                        $this->redirect("admin-connexion");
                     }
                 }
                 else

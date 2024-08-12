@@ -7,7 +7,7 @@
         <div>
             <p>{{session.error_message}}</p>
         </div>
-    <form action="index.php?route=admin-check-login" method="post">
+    <form action="index.php?route=admin-check-connexion" method="post">
         <input type="hidden" id="csrf_token" name="csrf_token" value="{{ session.csrf_token }}" />
         <fieldset class="mb-2">
             <label for="email" class="form-label">
