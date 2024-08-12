@@ -59,6 +59,10 @@ class Router
         {
             $this->adc->checkLogin();
         }
+        else if($route === "admin-deconnexion")
+        {
+            $this->adc->logout();
+        }
         else if($route === "admin-create-user")
         {
             $this->checkAdminAccess();

@@ -70,4 +70,16 @@ class AdminController extends AbstractController
         }
         
     }
+    
+    public function logout() : void 
+    {
+        // Détruit toutes les variables de session
+        //session_unset();
+
+        // Détruit la session
+        session_destroy();
+
+        // Redirige l'utilisateur vers la page de connexion
+        $this->redirect("admin-connexion");
+    }
 }
